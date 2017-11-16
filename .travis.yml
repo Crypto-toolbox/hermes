@@ -3,8 +3,10 @@ python:
   - "3.5"
 
 install:
-  - python3 -m pip install pyzmq
-  - python3 -m pip install coverage coveralls
+  - pip --version
+  - pip install coverage coveralls
+  - pip install pyzmq
+ 
 
 
 # command to run tests
