@@ -9,7 +9,9 @@ install:
 
 # command to run tests
 script:
-  - coverage run --source=hermes setup.py test
+  - coverage run --source=mypkg setup.py test
+  - coveralls
+
   - python tests.py
 
 
