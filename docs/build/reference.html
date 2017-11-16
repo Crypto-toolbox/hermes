@@ -1,0 +1,441 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Hermes - Reference &mdash; Hermes 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="Hermes 1.0 documentation" href="index.html" />
+   
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-hermes">
+<span id="hermes-reference"></span><h1>Hermes - Reference<a class="headerlink" href="#module-hermes" title="Permalink to this headline">¶</a></h1>
+<p>Module loader.</p>
+<span class="target" id="module-hermes.node"></span><p>Node Class to pull together receivers and publishers.</p>
+<p>Function as the smallest available unit with which can be communicated in a cluster.</p>
+<dl class="class">
+<dt id="hermes.node.Node">
+<em class="property">class </em><code class="descclassname">hermes.node.</code><code class="descname">Node</code><span class="sig-paren">(</span><em>name</em>, <em>receiver=None</em>, <em>publisher=None</em><span class="sig-paren">)</span><a class="headerlink" href="#hermes.node.Node" title="Permalink to this definition">¶</a></dt>
+<dd><p>Basic Node Class.</p>
+<p>Provides a basic interface for starting and stopping a node.</p>
+<p>Extend this as necessary.</p>
+<dl class="attribute">
+<dt id="hermes.node.Node.facilities">
+<code class="descname">facilities</code><a class="headerlink" href="#hermes.node.Node.facilities" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the names of facilities registered with this <code class="xref py py-class docutils literal"><span class="pre">hermes.Node</span></code> instance.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="hermes.node.Node.publish">
+<code class="descname">publish</code><span class="sig-paren">(</span><em>channel</em>, <em>data</em><span class="sig-paren">)</span><a class="headerlink" href="#hermes.node.Node.publish" title="Permalink to this definition">¶</a></dt>
+<dd><p>Publish the given data to channel, if a <code class="xref py py-class docutils literal"><span class="pre">hermes.Receiver</span></code> instance is available.</p>
+<p>The topic is generated from channel and <code class="xref py py-class docutils literal"><span class="pre">hermes.Node.name</span></code>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>channel</strong> &#8211; topic tree</li>
+<li><strong>data</strong> &#8211; Data Struct or string</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><code class="xref py py-class docutils literal"><span class="pre">None</span></code></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="hermes.node.Node.recv">
+<code class="descname">recv</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#hermes.node.Node.recv" title="Permalink to this definition">¶</a></dt>
+<dd><p>Receive data from the <code class="xref py py-class docutils literal"><span class="pre">hermes.Receiver</span></code> instance, if available.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="hermes.node.Node.run">
+<code class="descname">run</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#hermes.node.Node.run" title="Permalink to this definition">¶</a></dt>
+<dd><p>Execute the main loop, which can be extended as necessary.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="hermes.node.Node.start">
+<code class="descname">start</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#hermes.node.Node.start" title="Permalink to this definition">¶</a></dt>
+<dd><p>Start the <code class="xref py py-class docutils literal"><span class="pre">hermes.Node</span></code> instance and its facilities.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="hermes.node.Node.stop">
+<code class="descname">stop</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#hermes.node.Node.stop" title="Permalink to this definition">¶</a></dt>
+<dd><p>Stop the <code class="xref py py-class docutils literal"><span class="pre">hermes.Node</span></code> instance and its facilities.</p>
+</dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-hermes.receiver"></span><p>Receiver Component for usage in Node class.</p>
+<dl class="class">
+<dt id="hermes.receiver.Receiver">
+<em class="property">class </em><code class="descclassname">hermes.receiver.</code><code class="descname">Receiver</code><span class="sig-paren">(</span><em>sub_addr</em>, <em>name</em>, <em>topics=None</em>, <em>exchanges=None</em><span class="sig-paren">)</span><a class="headerlink" href="#hermes.receiver.Receiver" title="Permalink to this definition">¶</a></dt>
+<dd><p>Class providing a connection to one or many ZMQ Publisher(s).</p>
+<dl class="method">
+<dt id="hermes.receiver.Receiver.join">
+<code class="descname">join</code><span class="sig-paren">(</span><em>timeout=None</em><span class="sig-paren">)</span><a class="headerlink" href="#hermes.receiver.Receiver.join" title="Permalink to this definition">¶</a></dt>
+<dd><p>Join the <code class="xref py py-class docutils literal"><span class="pre">hermes.Receiver</span></code> instance.</p>
+<p>Clears the <code class="xref py py-attr docutils literal"><span class="pre">hermes.Receiver._is_running</span></code> flag, causing a graceful shutdown of
+the run loop.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>timeout</strong> &#8211; timeout in seconds passed to <a class="reference external" href="https://docs.python.org/library/threading.html#threading.Thread.join" title="(in Python v2.7)"><code class="xref py py-meth docutils literal"><span class="pre">threading.Thread.join()</span></code></a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><code class="xref py py-class docutils literal"><span class="pre">None</span></code></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="hermes.receiver.Receiver.recv">
+<code class="descname">recv</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#hermes.receiver.Receiver.recv" title="Permalink to this definition">¶</a></dt>
+<dd><p>Wrap around <code class="xref py py-meth docutils literal"><span class="pre">Queue.get()</span></code>.</p>
+<p>Returns the popped value or <code class="xref py py-class docutils literal"><span class="pre">None</span></code> if the <code class="xref py py-class docutils literal"><span class="pre">queue.Queue</span></code> is empty.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">data or <code class="xref py py-class docutils literal"><span class="pre">None</span></code></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="hermes.receiver.Receiver.run">
+<code class="descname">run</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#hermes.receiver.Receiver.run" title="Permalink to this definition">¶</a></dt>
+<dd><p>Execute the custom run loop for the <code class="xref py py-class docutils literal"><span class="pre">hermes.Receiver</span></code> class.</p>
+<p>It connectos to a ZMQ publisher on the local machine using the ports
+found in <code class="xref py py-attr docutils literal"><span class="pre">hermes.Receiver.ports</span></code>. If this is empty, it simply loops doing nothing.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><code class="xref py py-class docutils literal"><span class="pre">None</span></code></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="hermes.receiver.Receiver.stop">
+<code class="descname">stop</code><span class="sig-paren">(</span><em>timeout=None</em><span class="sig-paren">)</span><a class="headerlink" href="#hermes.receiver.Receiver.stop" title="Permalink to this definition">¶</a></dt>
+<dd><p>Stop the <code class="xref py py-class docutils literal"><span class="pre">hermes.Receiver</span></code> instance.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>timeout</strong> &#8211; time in seconds until <code class="xref py py-exc docutils literal"><span class="pre">TimeOutError</span></code> is raised</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><code class="xref py py-class docutils literal"><span class="pre">None</span></code></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-hermes.publisher"></span><p>Publisher component for use in a Node class.</p>
+<dl class="class">
+<dt id="hermes.publisher.Publisher">
+<em class="property">class </em><code class="descclassname">hermes.publisher.</code><code class="descname">Publisher</code><span class="sig-paren">(</span><em>pub_addr</em>, <em>name</em>, <em>ctx=None</em><span class="sig-paren">)</span><a class="headerlink" href="#hermes.publisher.Publisher" title="Permalink to this definition">¶</a></dt>
+<dd><p>Allows publishing data to subscribers.</p>
+<p>The publishing is realized with ZMQ&#8217;s Publisher sockets, and supports publishing
+to multiple subscribers.</p>
+<p>The <code class="xref py py-meth docutils literal"><span class="pre">hermes.Publisher.run()</span></code> method continuously checks for data on the internal q,
+which is fed by the <code class="xref py py-meth docutils literal"><span class="pre">hermes.Publisher.publish()</span></code> method.</p>
+<dl class="method">
+<dt id="hermes.publisher.Publisher.join">
+<code class="descname">join</code><span class="sig-paren">(</span><em>timeout=None</em><span class="sig-paren">)</span><a class="headerlink" href="#hermes.publisher.Publisher.join" title="Permalink to this definition">¶</a></dt>
+<dd><p>Join the <code class="xref py py-class docutils literal"><span class="pre">hermes.Publisher</span></code> instance and shut it down.</p>
+<p>Clears the <code class="xref py py-attr docutils literal"><span class="pre">hermes.Publisher._running</span></code> flag to gracefully terminate the run loop.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>timeout</strong> &#8211; timeout in seconds to wait for <code class="xref py py-meth docutils literal"><span class="pre">hermes.Publisher.join()</span></code> to finish</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><code class="xref py py-class docutils literal"><span class="pre">None</span></code></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="hermes.publisher.Publisher.publish">
+<code class="descname">publish</code><span class="sig-paren">(</span><em>envelope</em><span class="sig-paren">)</span><a class="headerlink" href="#hermes.publisher.Publisher.publish" title="Permalink to this definition">¶</a></dt>
+<dd><p>Publish the given data to all current subscribers.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>envelope</strong> &#8211; <code class="xref py py-class docutils literal"><span class="pre">hermes.Envelope</span></code> instance</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">None</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="hermes.publisher.Publisher.run">
+<code class="descname">run</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#hermes.publisher.Publisher.run" title="Permalink to this definition">¶</a></dt>
+<dd><p>Custumized run loop to publish data.</p>
+<p>Sets up a ZMQ publisher socket and sends data as soon as it is available
+on the internal Queue at <code class="xref py py-attr docutils literal"><span class="pre">hermes.Publisher.q</span></code>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><code class="xref py py-class docutils literal"><span class="pre">None</span></code></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="hermes.publisher.Publisher.stop">
+<code class="descname">stop</code><span class="sig-paren">(</span><em>timeout=None</em><span class="sig-paren">)</span><a class="headerlink" href="#hermes.publisher.Publisher.stop" title="Permalink to this definition">¶</a></dt>
+<dd><p>Stop the <code class="xref py py-class docutils literal"><span class="pre">hermes.Publisher</span></code> instance.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>timeout</strong> &#8211; time in seconds until <code class="xref py py-exc docutils literal"><span class="pre">TimeOutError</span></code> is raised</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><code class="xref py py-class docutils literal"><span class="pre">None</span></code></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-hermes.proxy"></span><p>Basic XPub/XSub Proxy Interface for a cluster.</p>
+<dl class="class">
+<dt id="hermes.proxy.PostOffice">
+<em class="property">class </em><code class="descclassname">hermes.proxy.</code><code class="descname">PostOffice</code><span class="sig-paren">(</span><em>sub_addr</em>, <em>pub_addr</em>, <em>debug_addr=None</em><span class="sig-paren">)</span><a class="headerlink" href="#hermes.proxy.PostOffice" title="Permalink to this definition">¶</a></dt>
+<dd><p>Class to forward subscriptions from publishers to subscribers.</p>
+<p>Uses <code class="xref py py-const docutils literal"><span class="pre">zmq.XSUB</span></code> &amp; <code class="xref py py-const docutils literal"><span class="pre">zmq.XPUB</span></code> ZMQ sockets to act as intermediary. Subscribe to
+these using the respective PUB or SUB socket by binding to the same address as
+XPUB or XSUB device.</p>
+<dl class="attribute">
+<dt id="hermes.proxy.PostOffice.debug_addr">
+<code class="descname">debug_addr</code><a class="headerlink" href="#hermes.proxy.PostOffice.debug_addr" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return debug socket&#8217;s address.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="hermes.proxy.PostOffice.run">
+<code class="descname">run</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#hermes.proxy.PostOffice.run" title="Permalink to this definition">¶</a></dt>
+<dd><p>Serve XPub-XSub Sockets.</p>
+<p>Relays Publisher Socket data to Subscribers, and allows subscribers
+to sub to that data. Offers the benefit of having a single static
+address to connect to a cluster.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><code class="xref py py-class docutils literal"><span class="pre">None</span></code></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-hermes.structs"></span><p>Data structs for use within the hermes ecosystem.</p>
+<dl class="class">
+<dt id="hermes.structs.Envelope">
+<em class="property">class </em><code class="descclassname">hermes.structs.</code><code class="descname">Envelope</code><span class="sig-paren">(</span><em>topic_tree</em>, <em>origin</em>, <em>data</em>, <em>ts=None</em><span class="sig-paren">)</span><a class="headerlink" href="#hermes.structs.Envelope" title="Permalink to this definition">¶</a></dt>
+<dd><p>Transport Object for data being sent between hermes components via ZMQ.</p>
+<p>It is encouraged to use <code class="xref py py-class docutils literal"><span class="pre">hermes.Message</span></code> as data for more complex data objects, but
+all JSON-serializable built-in data types are supported.</p>
+<p>They track topic and origin of the data they transport, as well as the
+timestamp it was last updated at. Updates occur automatically whenever
+<code class="xref py py-meth docutils literal"><span class="pre">hermes.Envelope.serialize()</span></code> is called.
+This timestamp can be used to detect Slow-Subscriber-Syndrome by <code class="xref py py-class docutils literal"><span class="pre">hermes.Receiver</span></code> and
+to initiate the suicidal snail pattern.</p>
+<dl class="method">
+<dt id="hermes.structs.Envelope.convert_to_frames">
+<code class="descname">convert_to_frames</code><span class="sig-paren">(</span><em>encoding=None</em><span class="sig-paren">)</span><a class="headerlink" href="#hermes.structs.Envelope.convert_to_frames" title="Permalink to this definition">¶</a></dt>
+<dd><p>Encode the <code class="xref py py-class docutils literal"><span class="pre">hermes.Envelope</span></code> attributes as a list of json-serialized strings.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>encoding</strong> &#8211; the encoding to us for <a class="reference external" href="https://docs.python.org/library/stdtypes.html#str.encode" title="(in Python v2.7)"><code class="xref py py-meth docutils literal"><span class="pre">str.encode()</span></code></a>, default UTF-8</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">list of <code class="xref py py-class docutils literal"><span class="pre">bytes</span></code></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="hermes.structs.Envelope.load_from_frames">
+<em class="property">static </em><code class="descname">load_from_frames</code><span class="sig-paren">(</span><em>frames</em>, <em>encoding=None</em><span class="sig-paren">)</span><a class="headerlink" href="#hermes.structs.Envelope.load_from_frames" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load json to a new <code class="xref py py-class docutils literal"><span class="pre">hermes.Envelope</span></code> instance.</p>
+<p>Automatically converts to string if the passed object is
+a <code class="xref py py-class docutils literal"><span class="pre">bytes.encode()</span></code> object.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>frames</strong> &#8211; Frames, as received by <code class="xref py py-meth docutils literal"><span class="pre">zmq.socket.recv_multipart()</span></code></li>
+<li><strong>encoding</strong> &#8211; The encoding to use for <code class="xref py py-meth docutils literal"><span class="pre">bytes.encode()</span></code>; default UTF-8</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><code class="xref py py-class docutils literal"><span class="pre">hermes.Envelope</span></code> instance</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="hermes.structs.Envelope.update_ts">
+<code class="descname">update_ts</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#hermes.structs.Envelope.update_ts" title="Permalink to this definition">¶</a></dt>
+<dd><p>Update the <code class="xref py py-class docutils literal"><span class="pre">hermes.Envelope</span></code> timestamp.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="hermes.structs.Message">
+<em class="property">class </em><code class="descclassname">hermes.structs.</code><code class="descname">Message</code><span class="sig-paren">(</span><em>ts=None</em><span class="sig-paren">)</span><a class="headerlink" href="#hermes.structs.Message" title="Permalink to this definition">¶</a></dt>
+<dd><p>Basic Struct class for data sent via an <code class="xref py py-class docutils literal"><span class="pre">hermes.Envelope</span></code>.</p>
+<p>Provides basic and dynamic load and dump functions to easily load
+data to and from it.</p>
+<p>If you have complex data types, consider extending this class, as it requires less overhead
+than, for example, dictionaries, by using __slots__.</p>
+<p>The class&#8217;s timestamp attribute (ts) denotes the time of which the data was received.</p>
+<dl class="method">
+<dt id="hermes.structs.Message.load">
+<code class="descname">load</code><span class="sig-paren">(</span><em>data</em><span class="sig-paren">)</span><a class="headerlink" href="#hermes.structs.Message.load" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load data into a new data struct.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>data</strong> &#8211; iterable, as transported by <code class="xref py py-class docutils literal"><span class="pre">hermes.Envelope</span></code></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><code class="xref py py-class docutils literal"><span class="pre">hermes.Message</span></code></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="hermes.structs.Message.serialize">
+<code class="descname">serialize</code><span class="sig-paren">(</span><em>encoding=None</em><span class="sig-paren">)</span><a class="headerlink" href="#hermes.structs.Message.serialize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Serialize this data struct to <code class="xref py py-class docutils literal"><span class="pre">bytes</span></code>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>encoding</strong> &#8211; Encoding to use in str.encode()</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">data of this struct as <code class="xref py py-class docutils literal"><span class="pre">bytes</span></code></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/reference.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, Nils Diefenbach.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.7</a>
+      
+      |
+      <a href="_sources/reference.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
