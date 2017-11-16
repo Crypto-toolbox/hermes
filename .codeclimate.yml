@@ -1,0 +1,19 @@
+engines:
+  radon:
+    enabled: true
+  pep8:
+    enabled: true
+  duplication:
+    enabled: true
+    config:
+      languages:
+      - python
+ratings:
+  paths:
+  - hermes/**
+  - "**.py"
+
+exclude_paths:
+- docs/
+- dist/
+- tests.py
