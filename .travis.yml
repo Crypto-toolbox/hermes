@@ -3,8 +3,8 @@ python:
   - "3.5"
 
 install:
-  - python3.5 -m pip install pyzmq
-  - python3.5 -m pip install coverage coveralls
+  - python3 -m pip install pyzmq
+  - python3 -m pip install coverage coveralls
 
 
 # command to run tests
@@ -12,7 +12,7 @@ script:
   - coverage run --source=hermes setup.py test
   - coveralls
 
-  - python3.5 tests.py
+  - python3 tests.py
 
 
 
