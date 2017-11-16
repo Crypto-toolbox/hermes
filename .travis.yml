@@ -4,11 +4,12 @@ python:
   - "3.6"
 
 install:
-  - python setup.py install
+  - pip install pyzmq
 
 
 # command to run tests
 script:
+  - coverage run --source=hermes setup.py test
   - python tests.py
 
 
