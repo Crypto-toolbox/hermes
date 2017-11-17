@@ -1,7 +1,9 @@
 .. image:: https://travis-ci.org/nlsdfnbch/hermes.svg?branch=master
     :target: https://travis-ci.org/nlsdfnbch/hermes
+
 .. image:: https://coveralls.io/repos/github/nlsdfnbch/hermes/badge.svg?branch=master
     :target: https://coveralls.io/github/nlsdfnbch/hermes?branch=master
+
 .. image:: https://readthedocs.org/projects/hermes-framework/badge/?version=latest
     :target: http://hermes-framework.readthedocs.io/en/latest/?badge=latest
 
