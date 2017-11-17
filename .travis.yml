@@ -13,25 +13,21 @@ script: echo "Starting.."
 jobs:
   include:
     - stage: lint
-    - script: ./execute_linters.sh
+      script: ./execute_linters.sh
     - stage: compile
-    - script: python setup.py install
+      script: python setup.py install
     - stage: test
-    - script: ./execute_tests.sh
+      script: ./execute_tests.sh
     - stage: deploy
-    - script: ./deploy.sh
-script:
-  - coverage run --source=hermes setup.py test
-  - coveralls
+      script: ./deploy.sh
 
-  - python3 tests.py
 
 stages:
   - lint
   - compile
   - test
   - name: deploy
-  if: branch=master
+    if: branch = master
 
 branches:
   only:
