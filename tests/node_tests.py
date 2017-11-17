@@ -26,6 +26,25 @@ class NodeTests(unittest.TestCase):
             node.stop()
         mock_logger.assert_called_with("Could not stop all facilities!")
 
+    def test_publish_method_returns_error_if_no_publisher_available(self):
+        node = Node('test', "Invalid", None)
+        with self.assertRaises(NotImplementedError):
+            node.publish("Something", "else")
+
+    def test_recv_method_returns_error_if_no_publisher_available(self):
+        node = Node('test', "Invalid", None)
+        with self.assertRaises(NotImplementedError):
+            node.recv()
+
+    def test_recv_and_publish_call_relevant_methods_of_facilities(self):
+        mock_receiver = mock.Mock(Receiver)
+        mock_publisher = mock.Mock(Publisher)
+        node = Node("test", mock_receiver, mock_publisher)
+        node.recv()
+        self.assertTrue(mock_receiver.recv.called)
+        node.publish("channel", "data")
+        self.assertTrue(mock_publisher.publish.called)
+
     def test_Node_context_manager_works_as_expected(self):
         node = Node('test', Publisher(XPUB_ADDR, 'test_pub'),
                     Receiver(XSUB_ADDR, 'test_recv'))
