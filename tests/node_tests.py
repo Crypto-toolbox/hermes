@@ -56,7 +56,3 @@ class NodeTests(unittest.TestCase):
 
         self.assertFalse(node.receiver._running.is_set())
         self.assertFalse(node.publisher._running.is_set())
-
-
-if __name__ == '__main__':
-    unittest.main()

@@ -36,12 +36,9 @@ class ReceiverTests(unittest.TestCase):
         self.assertEqual(data, recv_data.data)
         time.sleep(3)
         publisher.close()
+        conn.stop()
 
     def test_Receiver_returns_None_on_empty_queue(self):
         port = 10000
         r = Receiver("tcp://127.0.0.1:%s" % port, "test")
         self.assertIsNone(r.recv())
-
-
-if __name__ == '__main__':
-    unittest.main()

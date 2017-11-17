@@ -27,7 +27,3 @@ class StructsTests(unittest.TestCase):
         self.assertIsInstance(loaded_msg.data, list)
         for item in loaded_msg.data:
             self.assertIsInstance(item, str)
-
-
-if __name__ == '__main__':
-    unittest.main()
