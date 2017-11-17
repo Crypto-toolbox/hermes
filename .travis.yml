@@ -20,7 +20,12 @@ jobs:
       script:  bash ./travis/execute_tests.sh
     - stage: deploy
       env: EXPECTED_FAILURE='TRUE'
-      script: bash ./travis/deploy.sh
+      provider: pypi
+      user: $PYPI_NAME
+      password: $PYPI_PW
+      on:
+        branch: master
+
 
 allow_failures:
   - env: EXPECTED_FAILURE='TRUE'
