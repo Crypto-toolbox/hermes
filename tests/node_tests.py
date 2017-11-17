@@ -1,7 +1,7 @@
 # Import Built-Ins
 import logging
 import unittest
-
+from unittest import mock
 # Import Homebrew
 from hermes import Publisher, Receiver, Node
 from hermes.config import XPUB_ADDR, XSUB_ADDR
@@ -11,6 +11,23 @@ log = logging.getLogger(__name__)
 
 
 class NodeTests(unittest.TestCase):
+
+    @mock.patch('logging.Logger.error')
+    def test_start_logs_error_if_faulty_facilities_are_given(self, mock_logger):
+        node = Node('test', "Invalid", None)
+        with self.assertRaises(AttributeError):
+            node.start()
+        self.assertTrue(mock_logger.called)
+        self.assertTrue(mock_logger.assert_called_with("Could not start all facilities!"))
+
+    @mock.patch('logging.Logger.error')
+    def test_stop_logs_error_if_faulty_facilities_are_given(self, mock_logger):
+        node = Node('test', "Invalid", None)
+        with self.assertRaises(AttributeError):
+            node.stop()
+        self.assertTrue(mock_logger.called)
+        self.assertTrue(mock_logger.assert_called_with("Could not stop all facilities!"))
+
     def test_Node_context_manager_works_as_expected(self):
         node = Node('test', Publisher(XPUB_ADDR, 'test_pub'),
                     Receiver(XSUB_ADDR, 'test_recv'))
