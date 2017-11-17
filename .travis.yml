@@ -13,13 +13,13 @@ script: echo "Starting.."
 jobs:
   include:
     - stage: lint
-      script: ./execute_linters.sh
+      script: ./travis/execute_linters.sh
     - stage: compile
       script: python setup.py install
     - stage: test
-      script: ./execute_tests.sh
+      script: ./travis/execute_tests.sh
     - stage: deploy
-      script: ./deploy.sh
+      script: ./travis/deploy.sh
 
 
 stages:
