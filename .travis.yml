@@ -19,6 +19,7 @@ jobs:
     - stage: test
       script:  bash ./travis/execute_tests.sh
     - stage: deploy
+      on: [[ $TRAVIS_COMMIT_MESSAGE == *"DEPLOY"* ]]
       script: bash ./travis/deploy.sh
 
 
@@ -27,7 +28,6 @@ stages:
   - compile
   - test
   - name: deploy
-    on: [[ $TRAVIS_COMMIT_MESSAGE == *"DEPLOY"* ]]
     if: branch = master
 
 
