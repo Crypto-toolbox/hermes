@@ -4,7 +4,7 @@ python:
 
 install:
   - pip --version
-  - pip install coverage coveralls
+  - pip install coverage coveralls twine
   - pip install pylint pydocstyle pycodestyle
   - pip install pyzmq
 
@@ -28,6 +28,7 @@ stages:
   - test
   - name: deploy
     if: branch = master
+
 
 branches:
   only:
