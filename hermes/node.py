@@ -78,7 +78,7 @@ class Node:
                     facility.start()
                 except Exception as e:
                     log.exception(e)
-                    log.error("Could not start all facility!")
+                    log.error("Could not start all facilities!")
                     raise
 
     def _stop_facilities(self):
@@ -98,7 +98,7 @@ class Node:
                     facility.stop()
                 except Exception as e:
                     log.exception(e)
-                    log.error("Could not stop all facility!")
+                    log.error("Could not stop all facilities!")
                     raise
 
     def publish(self, channel, data):
