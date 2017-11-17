@@ -19,8 +19,18 @@ jobs:
     - stage: test
       script:  bash ./travis/execute_tests.sh
     - stage: deploy
-      script: bash ./travis/deploy.sh
+      env: EXPECTED_FAILURE='TRUE'
+      provider: pypi
+      user: $PYPI_NAME
+      password: $PYPI_PW
+      on:
+        tags: true
+        branch: master
 
+
+
+allow_failures:
+  - env: EXPECTED_FAILURE='TRUE'
 
 stages:
   - lint
