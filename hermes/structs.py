@@ -166,7 +166,8 @@ class Message:
     def _class_to_string(self):
         """Convert this class name into a :class:`str`."""
         return self.__class__.__qualname__
-    
+
+    # pylint: disable=too-many-format-args
     def __repr__(self):
         """Construct a basic string-represenation of this class instance."""
         attributes_as_strings = '('
@@ -174,4 +175,3 @@ class Message:
             attributes_as_strings += '%s=%r, ' % (attr, getattr(self, attr))
         attributes_as_strings = attributes_as_strings[:-2] + ')'
         return "%r%s".format(self._class_to_string(), attributes_as_strings)
-
