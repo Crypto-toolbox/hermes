@@ -75,7 +75,10 @@ class PostOffice:
 
         log.info("Launching poll loop..")
         while self.running:
-            zmq.proxy(xpub, xsub, debug_pub)
+            try:
+                zmq.proxy(xpub, xsub, debug_pub)
+            except KeyboardInterrupt:
+                break
 
         xpub.close()
         xsub.close()
