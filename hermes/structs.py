@@ -37,7 +37,7 @@ class Envelope:
         self.topic = topic_tree
         self.origin = origin
         self.data = data
-        self.ts = ts if ts else time.time()
+        self.ts = ts or time.time()
 
     def __repr__(self):
         """Construct a basic string-represenation of this class instance."""
