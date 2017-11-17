@@ -5,18 +5,33 @@ python:
 install:
   - pip --version
   - pip install coverage coveralls
+  - pip install pylint pydocstyle pycodestyle
   - pip install pyzmq
- 
 
+script: echo "Starting.."
 
-# command to run tests
+jobs:
+  include:
+    - stage: lint
+    - script: ./execute_linters.sh
+    - stage: compile
+    - script: python setup.py install
+    - stage: test
+    - script: ./execute_tests.sh
+    - stage: deploy
+    - script: ./deploy.sh
 script:
   - coverage run --source=hermes setup.py test
   - coveralls
 
   - python3 tests.py
 
-
+stages:
+  - lint
+  - compile
+  - test
+  - name: deploy
+  if: branch=master
 
 branches:
   only:
