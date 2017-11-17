@@ -19,8 +19,11 @@ jobs:
     - stage: test
       script:  bash ./travis/execute_tests.sh
     - stage: deploy
+      env: EXPECTED_FAILURE='TRUE'
       script: bash ./travis/deploy.sh
 
+allow_failures:
+  - env: EXPECTED_FAILURE='TRUE'
 
 stages:
   - lint
