@@ -1,9 +1,9 @@
 +---------+----------------+-------------------+----------------+
 |Branch   | Build Status   |   Coverage        | Documentation  |
 +=========+================+===================+================+
-|`master` | |master_build| | |master_coverage| | |Docs|         |
-|---------+----------------+-------------------+                |
-|`dev`    | |dev_build|    | |dev_coverage|    |                |
+|`master` | |master_build| | |master_coverage| | |master_docs|  |
++---------+----------------+-------------------+----------------+
+|`dev`    | |dev_build|    | |dev_coverage|    |  |dev_docs|    |
 +---------+----------------+-------------------+----------------+
 
 
@@ -46,5 +46,8 @@ install via ``pip install hermes-zmq`` and import with ``import hermes``.
     :target: https://coveralls.io/github/nlsdfnbch/hermes?branch=dev
 
 
-.. |Docs| image:: https://readthedocs.org/projects/hermes-framework/badge/?version=latest
+.. |master_docs| image:: https://readthedocs.org/projects/hermes-framework/badge/?version=latest
     :target: http://hermes-framework.readthedocs.io/en/latest/?badge=latest
+
+.. |dev_docs| image:: https://readthedocs.org/projects/hermes-framework/badge/?version=dev
+    :target: http://hermes-framework.readthedocs.io/en/latest/?badge=dev
