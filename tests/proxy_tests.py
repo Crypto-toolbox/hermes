@@ -33,3 +33,7 @@ class ProxyTests(unittest.TestCase):
         proxy_p.join()
         self.assertFalse(proxy_p.is_alive())
         self.assertFalse(proxy.running)
+
+
+if __name__ == '__main__':
+    unittest.main(verbosity=2)

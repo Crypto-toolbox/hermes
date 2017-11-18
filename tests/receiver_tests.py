@@ -42,3 +42,7 @@ class ReceiverTests(unittest.TestCase):
         port = 10000
         r = Receiver("tcp://127.0.0.1:%s" % port, "test")
         self.assertIsNone(r.recv())
+
+
+if __name__ == '__main__':
+    unittest.main(verbosity=2)

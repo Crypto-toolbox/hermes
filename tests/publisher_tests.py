@@ -84,3 +84,7 @@ class PublisherTests(unittest.TestCase):
         publisher.start()
         time.sleep(3)
         self.assertTrue(publisher._running.is_set())
+
+
+if __name__ == '__main__':
+    unittest.main(verbosity=2)
