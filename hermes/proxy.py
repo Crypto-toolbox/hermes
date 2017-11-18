@@ -3,6 +3,7 @@
 
 # Import Built-Ins
 import logging
+from threading import Thread
 
 # Import Third-Party
 import zmq
@@ -13,7 +14,7 @@ import zmq
 log = logging.getLogger(__name__)
 
 
-class PostOffice:
+class PostOffice(Thread):
     """
     Class to forward subscriptions from publishers to subscribers.
 
@@ -35,13 +36,27 @@ class PostOffice:
         """
         self.xsub_url = sub_addr
         self.xpub_url = pub_addr
-        self.running = False
         self._debug_addr = debug_addr
+        self.ctx = zmq.Context()
+        super(PostOffice, self).__init__()
 
     @property
     def debug_addr(self):
         """Return debug socket's address."""
         return self._debug_addr
+
+    @property
+    def running(self):
+        """Check if the thread is still alive and running."""
+        return self.is_alive()
+
+    def stop(self, timeout=None):
+        """Stop the thread.
+
+        :param timeout: timeout in seconds to wait for join
+        """
+        self.ctx.term()
+        self.join(timeout)
 
     def run(self):
         """
@@ -53,8 +68,7 @@ class PostOffice:
 
         :return: :class:`None`
         """
-        self.running = True
-        ctx = zmq.Context()
+        ctx = self.ctx
 
         log.info("Setting up XPUB ZMQ socket..")
         xpub = ctx.socket(zmq.XPUB)
@@ -74,13 +88,9 @@ class PostOffice:
             debug_pub = None
 
         log.info("Launching poll loop..")
-        while self.running:
-            try:
-                zmq.proxy(xpub, xsub, debug_pub)
-            except KeyboardInterrupt:
-                break
-
-        xpub.close()
-        xsub.close()
-        debug_pub.close()
-        ctx.term()
+        try:
+            zmq.proxy(xpub, xsub, debug_pub)
+        except zmq.error.ContextTerminated:
+            xpub.close()
+            xsub.close()
+            debug_pub.close()
