@@ -33,14 +33,14 @@ Usage
 install via ``pip install hermes-zmq`` and import with ``import hermes``.
 
 
-.. |master_build| image:: https://travis-ci.org/nlsdfnbch/hermes.svg?branch=master |
-    :target: https://travis-ci.org/nlsdfnbch/hermes                 |
+.. |master_build| image:: https://travis-ci.org/nlsdfnbch/hermes.svg?branch=master
+    :target: https://travis-ci.org/nlsdfnbch/hermes
 
 .. |master_coverage| image:: https://coveralls.io/repos/github/nlsdfnbch/hermes/badge.svg?branch=master
     :target: https://coveralls.io/github/nlsdfnbch/hermes?branch=master
 
-.. |dev_build| image:: https://travis-ci.org/nlsdfnbch/hermes.svg?branch=dev |
-    :target: https://travis-ci.org/nlsdfnbch/hermes                 |
+.. |dev_build| image:: https://travis-ci.org/nlsdfnbch/hermes.svg?branch=dev
+    :target: https://travis-ci.org/nlsdfnbch/hermes             
 
 .. |dev_coverage| image:: https://coveralls.io/repos/github/nlsdfnbch/hermes/badge.svg?branch=dev
     :target: https://coveralls.io/github/nlsdfnbch/hermes?branch=dev
