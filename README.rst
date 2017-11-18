@@ -50,4 +50,4 @@ install via ``pip install hermes-zmq`` and import with ``import hermes``.
     :target: http://hermes-framework.readthedocs.io/en/latest/?badge=latest
 
 .. |dev_docs| image:: https://readthedocs.org/projects/hermes-framework/badge/?version=dev
-    :target: http://hermes-framework.readthedocs.io/en/latest/?badge=dev
+    :target: http://hermes-framework.readthedocs.io/en/dev/?badge=dev
