@@ -1,6 +1,7 @@
 # Import Built-Ins
 import logging
 import unittest
+import json
 
 # Import Homebrew
 from hermes import Envelope, Message
@@ -33,9 +34,11 @@ class StructsTests(unittest.TestCase):
         serialized = m.serialize()
         self.assertIsInstance(serialized, bytes)
         try:
-            decoded_m = serialized.decode("utf-8")
+            decoded_m = json.loads(serialized.decode("utf-8"))
         except UnicodeDecodeError:
             self.fail("Encoding is not UTF-8!")
+        except json.JSONDecodeError:
+            self.fail("Data is not JSON-serialized!")
         m2 = Message()
         m2 = m2.load(decoded_m)
         self.assertEqual(m2.dtype, m.dtype)
@@ -49,5 +52,5 @@ class StructsTests(unittest.TestCase):
 
     def test_repr_prints_expected_output(self):
         m = Message()
-        expected_str = "Message(dtype='Message', ts=%r)" % m.ts
+        expected_str = "Message(dtype=Message, ts=%r)" % m.ts
         self.assertEqual(m.__repr__(), expected_str)
