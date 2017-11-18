@@ -1,5 +1,5 @@
 #!/bin/bash
 pip install coverage;
-python setup.py install;
-coverage run --source=hermes tests;
+coverage run --source=hermes setup.py test;
 coveralls;
+

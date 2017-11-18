@@ -79,7 +79,7 @@ class Receiver(Thread):
         while self._running.is_set():
             try:
                 frames = self.sock.recv_multipart(flags=zmq.NOBLOCK)
-            except zmq.Again:
+            except zmq.error.Again:
                 continue
             cts_msg = Envelope.load_from_frames(frames)
             log.debug("run(): Received %r", Envelope)

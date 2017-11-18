@@ -36,6 +36,7 @@ class ReceiverTests(unittest.TestCase):
         self.assertEqual(data, recv_data.data)
         time.sleep(3)
         publisher.close()
+        conn.stop()
 
     def test_Receiver_returns_None_on_empty_queue(self):
         port = 10000
@@ -44,4 +45,4 @@ class ReceiverTests(unittest.TestCase):
 
 
 if __name__ == '__main__':
-    unittest.main()
+    unittest.main(verbosity=2)
