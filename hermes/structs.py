@@ -172,6 +172,7 @@ class Message:
         """Construct a basic string-represenation of this class instance."""
         attributes_as_strings = '('
         for attr in self._slots():
-            attributes_as_strings += '%s=%r, ' % (attr, getattr(self, attr))
+            attributes_as_strings += '{0}={1}, '.format(attr, getattr(self, attr))
         attributes_as_strings = attributes_as_strings[:-2] + ')'
-        return "%r%s".format(self._class_to_string(), attributes_as_strings)
+        s = "{0}{1}".format(self._class_to_string(), attributes_as_strings)
+        return s
