@@ -25,13 +25,10 @@ class ProxyTests(unittest.TestCase):
 
     def test_proxy_shutsdown_gracefully_on_keyboard_interrupt(self):
         proxy = PostOffice(XSUB_ADDR, XPUB_ADDR, DEBUG_ADDR)
-        proxy_p = Process(target=proxy.run)
-        proxy_p.start()
-        time.sleep(1.5)
-        os.kill(proxy_p.pid, signal.SIGINT)
-        time.sleep(1.5)
-        proxy_p.join()
-        self.assertFalse(proxy_p.is_alive())
+        proxy.start()
+        time.sleep(3)
+        proxy.stop()
+        time.sleep(1)
         self.assertFalse(proxy.running)
 
 
