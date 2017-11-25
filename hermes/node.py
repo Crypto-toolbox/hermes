@@ -125,9 +125,16 @@ class Node:
             raise NotImplementedError
 
     def run(self):
-        """Execute the main loop, which can be extended as necessary."""
+        """Execute the main loop, which can be extended as necessary.
+
+        If not extended, the following loop will be executed while
+        :attr:`hermes.Node._running` is True:
+            1. call :meth:`hermes.Node.recv` and check if there's a message
+            2. if a message was received:
+                call :meth:`hermes.Node.publish` and send message.
+            3. Repeat.
+        """
         while self._running:
-            try:
-                time.sleep(1)
-            except KeyboardInterrupt:
-                break
+            msg = self.recv()
+            if msg:
+                self.publish('RAW', msg)
