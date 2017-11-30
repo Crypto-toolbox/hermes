@@ -117,10 +117,10 @@ class Node:
         except AttributeError:
             raise NotImplementedError
 
-    def recv(self):
+    def recv(self, block=False, timeout=None):
         """Receive data from the :class:`hermes.Receiver` instance, if available."""
         try:
-            return self.receiver.recv()
+            return self.receiver.recv(block, timeout)
         except AttributeError:
             raise NotImplementedError
 
