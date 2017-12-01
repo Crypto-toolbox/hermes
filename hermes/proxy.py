@@ -94,3 +94,4 @@ class PostOffice(Thread):
             xpub.close()
             xsub.close()
             debug_pub.close()
+            log.info("Closed sockets, Proxy terminated")

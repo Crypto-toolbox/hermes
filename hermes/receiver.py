@@ -47,7 +47,9 @@ class Receiver(Thread):
         :param timeout: time in seconds until :exc:`TimeOutError` is raised
         :return: :class:`None`
         """
+        log.info("Stopping Receiver instance..")
         self.join(timeout)
+        log.info("..done.")
 
     def join(self, timeout=None):
         """Join the :class:`hermes.Receiver` instance.
@@ -73,8 +75,11 @@ class Receiver(Thread):
         self._running.set()
         ctx = zmq.Context()
         self.sock = ctx.socket(zmq.SUB)
+        log.info("Setting sockopts to subscribe to topics %r.." % self._topics)
         self.sock.setsockopt_unicode(zmq.SUBSCRIBE, self._topics)
+        log.info("Connecting Publisher to zmq.Pub Socket at %s.." % self.sub_addr)
         self.sock.connect(self.sub_addr)
+        log.info("Success! Executing receiver loop..")
 
         while self._running.is_set():
             try:
@@ -100,6 +105,7 @@ class Receiver(Thread):
 
         ctx.destroy()
         self.sock = None
+        log.info("Loop terminated.")
 
     def recv(self, block=False, timeout=None):
         """

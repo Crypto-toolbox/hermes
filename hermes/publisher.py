@@ -59,7 +59,9 @@ class Publisher(Thread):
         :param timeout: time in seconds until :exc:`TimeOutError` is raised
         :return: :class:`None`
         """
+        log.info("Stopping Publisher instance..")
         self.join(timeout=timeout)
+        log.info("..done.")
 
     def join(self, timeout=None):
         """
@@ -70,10 +72,13 @@ class Publisher(Thread):
         :param timeout: timeout in seconds to wait for :meth:`hermes.Publisher.join` to finish
         :return: :class:`None`
         """
+        log.debug("Clearing _running state..")
         self._running.clear()
+        log.debug("Closing socket..")
         try:
             self.sock.close()
         except AttributeError:
+            log.debug("Socket was already closed!")
             pass
         super(Publisher, self).join(timeout)
 
@@ -89,7 +94,9 @@ class Publisher(Thread):
         self._running.set()
         ctx = zmq.Context()
         self.sock = ctx.socket(zmq.PUB)
+        log.info("Connecting Publisher to zmq.Pub Socket at %s.." % self.pub_addr)
         self.sock.connect(self.pub_addr)
+        log.info("Success! Executing publisher loop..")
         while self._running.is_set():
             if not self.q.empty():
                 cts_msg = self.q.get(block=False)
@@ -103,5 +110,8 @@ class Publisher(Thread):
                     break
             else:
                 continue
+
         ctx.destroy()
         self.sock = None
+        log.info("Loop terminated.")
+

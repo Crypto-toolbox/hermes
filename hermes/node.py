@@ -47,11 +47,15 @@ class Node:
 
     def start(self):
         """Start the :class:`hermes.Node` instance and its facilities."""
+        log.info("Starting node..")
         self._start_facilities()
+        log.info("..done.")
 
     def stop(self):
         """Stop the :class:`hermes.Node` instance and its facilities."""
+        log.info("Stopping node..")
         self._stop_facilities()
+        log.info("..done.")
 
     def __enter__(self):
         """Start facilities upon entering with-block."""
@@ -72,6 +76,7 @@ class Node:
         logged and the facility isn't stopped.
         """
         self._running = True
+        log.debug("Starting facilities (%r total)", len(self._facilities))
         for facility in self._facilities:
             if facility:
                 try:
@@ -80,6 +85,7 @@ class Node:
                     log.exception(e)
                     log.error("Could not start all facilities!")
                     raise
+        log.debug("All facilities started successfully.")
 
     def _stop_facilities(self):
         """
@@ -92,6 +98,7 @@ class Node:
         logged and the facility isn't stopped.
         """
         self._running = False
+        log.debug("Stopping facilities (%r total)", len(self._facilities))
         for facility in self._facilities:
             if facility:
                 try:
@@ -100,6 +107,7 @@ class Node:
                     log.exception(e)
                     log.error("Could not stop all facilities!")
                     raise
+        log.debug("All facilities stopped successfully.")
 
     def publish(self, channel, data):
         """
