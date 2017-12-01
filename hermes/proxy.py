@@ -77,7 +77,7 @@ class PostOffice(Thread):
 
         log.info("Setting up XSUB ZMQ socket..")
         xsub = ctx.socket(zmq.XSUB)
-        log.debug("Binding XSUB socket facing publishers to %s..", self.xsub_url)
+        log.info("Binding XSUB socket facing publishers to %s..", self.xsub_url)
         xsub.bind(self.xsub_url)
 
         # Set up a debug socket, if address is given.
