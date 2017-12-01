@@ -94,7 +94,7 @@ class Publisher(Thread):
         self._running.set()
         ctx = zmq.Context()
         self.sock = ctx.socket(zmq.PUB)
-        log.info("Connecting Publisher to zmq.Pub Socket at %s.." % self.pub_addr)
+        log.info("Connecting Publisher to zmq.XSUB Socket at %s.." % self.pub_addr)
         self.sock.connect(self.pub_addr)
         log.info("Success! Executing publisher loop..")
         while self._running.is_set():

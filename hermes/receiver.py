@@ -77,7 +77,7 @@ class Receiver(Thread):
         self.sock = ctx.socket(zmq.SUB)
         log.info("Setting sockopts to subscribe to topics %r.." % self._topics)
         self.sock.setsockopt_unicode(zmq.SUBSCRIBE, self._topics)
-        log.info("Connecting Publisher to zmq.Pub Socket at %s.." % self.sub_addr)
+        log.info("Connecting Publisher to zmq.XPUB Socket at %s.." % self.sub_addr)
         self.sock.connect(self.sub_addr)
         log.info("Success! Executing receiver loop..")
 
