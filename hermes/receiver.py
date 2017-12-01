@@ -101,7 +101,7 @@ class Receiver(Thread):
         ctx.destroy()
         self.sock = None
 
-    def recv(self):
+    def recv(self, block=False, timeout=None):
         """
         Wrap around :meth:`Queue.get()`.
 
@@ -110,6 +110,6 @@ class Receiver(Thread):
         :return: data or :class:`None`
         """
         try:
-            return self.q.get(block=False)
+            return self.q.get(block, timeout)
         except Empty:
             return None
