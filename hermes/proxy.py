@@ -23,19 +23,19 @@ class PostOffice(Thread):
     XPUB or XSUB device.
     """
 
-    def __init__(self, sub_addr, pub_addr, debug_addr=None):
+    def __init__(self, proxy_in, proxy_out, debug_addr=None):
         """
         Initialize a :class:`hermes.PostOffice` instance.
 
         The addresses used when instantiating these are also the ones your
         publihser and receiver nodes should bind to.
 
-        :param sub_addr: ZMQ Address, including port
-        :param pub_addr: ZMQ address, including port
+        :param proxy_in: ZMQ Address, including port - facing towards cluster nodes
+        :param proxy_out: ZMQ address, including port - facing away from cluster nodes
         :param debug_addr: ZMQ address, including port
         """
-        self.xsub_url = sub_addr
-        self.xpub_url = pub_addr
+        self.xsub_url = proxy_in
+        self.xpub_url = proxy_out
         self._debug_addr = debug_addr
         self.ctx = zmq.Context()
         super(PostOffice, self).__init__()
@@ -72,12 +72,12 @@ class PostOffice(Thread):
 
         log.info("Setting up XPUB ZMQ socket..")
         xpub = ctx.socket(zmq.XPUB)
-        log.info("Binding XPUB socket facing clients to %s..", self.xpub_url)
+        log.info("Binding XPUB socket facing subscribers to %s..", self.xpub_url)
         xpub.bind(self.xpub_url)
 
         log.info("Setting up XSUB ZMQ socket..")
         xsub = ctx.socket(zmq.XSUB)
-        log.debug("Binding XSUB socket facing services to %s..", self.xsub_url)
+        log.debug("Binding XSUB socket facing publishers to %s..", self.xsub_url)
         xsub.bind(self.xsub_url)
 
         # Set up a debug socket, if address is given.
