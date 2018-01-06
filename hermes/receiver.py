@@ -88,27 +88,27 @@ class Receiver(Thread):
                 continue
 
             try:
-                cts_msg = Envelope.load_from_frames(frames)
+                envelope = Envelope.load_from_frames(frames)
             except KeyError as e:
                 log.exception(e)
                 log.error(frames)
                 continue
 
-            log.debug("run(): Received %r", Envelope)
+            log.debug("run(): Received %r", envelope)
 
-            if self._exchanges and cts_msg.origin not in self._exchanges:
+            if self._exchanges and envelope.origin not in self._exchanges:
                 continue
 
             recv_at = time.time()
-            if recv_at - float(cts_msg.ts) > self.timeout:
+            if recv_at - float(envelope.ts) > self.timeout:
                 log.error("Reciever %s: Receiver cannot keep up with publisher "
                           "(message delay(%s) > %s)! Cannot take peer "
                           "pressure, committing suicide.",
-                          self.name, recv_at - cts_msg.ts, self.timeout)
+                          self.name, recv_at - envelope.ts, self.timeout)
                 self._running.clear()
                 continue
 
-            self.q.put(cts_msg)
+            self.q.put(envelope)
 
         ctx.destroy()
         self.sock = None
