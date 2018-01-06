@@ -119,9 +119,9 @@ class Node:
         :param data: Data Struct or string
         :return: :class:`None`
         """
-        message = Envelope(channel + '/' + self.name, self.name, data)
+        envelope = Envelope(channel + '/' + self.name, self.name, data)
         try:
-            self.publisher.publish(message)
+            self.publisher.publish(envelope)
         except AttributeError:
             raise NotImplementedError
 
