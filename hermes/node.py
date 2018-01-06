@@ -1,10 +1,20 @@
 """Node Class to pull together receivers and publishers.
 
-Function as the smallest available unit with which can be communicated in a cluster.
+Functions as the smallest available unit with which can be communicated in a cluster.
+
+It offers slots for a Publisher and Receiver object. Each of these must implement at least a
+start() and stop() function, as well as a recv() (Receiver) and publish() (Publisher) method.
+The passed objects are therefore not limited to :class:`hermes.Publisher`
+and :class:`hermes.Receiver` objects.
+
+When left unmodified, the Node will simply pass data from the receiver to the publisher.
+
+:class:`hermes.Node` supports the `with` statement and will start up all facilities it has
+stored in its instance's :attr:`hermes.Node.facilities` property. These will also be stopped after
+leaving the with block, respectively.
 """
 
 # Import Built-Ins
-import time
 import logging
 
 # Import Third-Party
