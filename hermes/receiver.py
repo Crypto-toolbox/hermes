@@ -86,7 +86,14 @@ class Receiver(Thread):
                 frames = self.sock.recv_multipart(flags=zmq.NOBLOCK)
             except zmq.error.Again:
                 continue
-            cts_msg = Envelope.load_from_frames(frames)
+
+            try:
+                cts_msg = Envelope.load_from_frames(frames)
+            except KeyError as e:
+                log.exception(e)
+                log.error(frames)
+                continue
+
             log.debug("run(): Received %r", Envelope)
 
             if self._exchanges and cts_msg.origin not in self._exchanges:
@@ -115,7 +122,6 @@ class Receiver(Thread):
 
         :return: data or :class:`None`
         """
-        try:
+        if not self.q.empty():
             return self.q.get(block, timeout)
-        except Empty:
-            return None
+        return None
