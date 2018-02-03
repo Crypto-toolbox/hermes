@@ -6,7 +6,6 @@ import time
 import sys
 from functools import reduce
 
-from hermes.utils import check_pairs
 
 log = logging.getLogger(__name__)
 
@@ -259,47 +258,6 @@ class Quote(PricedMessage):
     def empty():
         """Return an empty Quote instance."""
         return Quote(None, None, None, 'N/A')
-
-    @check_pairs
-    def __add__(self, other):
-        """
-        Consolidate two quotes by adding them.
-
-        Only works if both have the same side and price. Otherwise
-        exceptions are thrown (IncompatibleSidesError or ValueError,
-        respectively)
-
-        :param other: Quote instance
-        :return:
-        """
-        if other.side == self.side and self.price == other.price:
-            # consolidate
-            return Quote(self.pair, self.price, self.size + other.size, self.side)
-        elif other.side != self.side:
-            raise IncompatibleSidesError
-        elif other.price != self.price:
-            raise ValueError("Price levels do not match! Cannot add Quotes!")
-
-    @check_pairs
-    def __sub__(self, other):
-        """
-        Substract a Quote from another Quote.
-
-        Only works if both have the same side and price. Otherwise
-        exceptions are thrown (IncompatibleSidesError or ValueError,
-        respectively)
-
-        :param other: Quote instance
-        :return:
-        """
-        if other.side == self.side and self.price == other.price:
-            # consolidate
-            return Quote(self.pair, self.price, self.size - other.size, self.side)
-        elif other.side != self.side:
-            raise IncompatibleSidesError
-        elif other.price != self.price:
-            raise ValueError("Price levels do not match! Cannot subtract "
-                             "Quotes!")
 
     def __repr__(self):
         """Construct a basic string-represenation of this class instance."""
