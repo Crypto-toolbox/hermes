@@ -6,6 +6,7 @@ import time
 import sys
 from functools import reduce
 
+from hermes.utils import check_pairs
 
 log = logging.getLogger(__name__)
 
