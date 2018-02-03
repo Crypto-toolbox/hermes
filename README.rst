@@ -33,17 +33,17 @@ Usage
 install via ``pip install hermes-zmq`` and import with ``import hermes``.
 
 
-.. |master_build| image:: https://travis-ci.org/nlsdfnbch/hermes.svg?branch=master
-    :target: https://travis-ci.org/nlsdfnbch/hermes
+.. |master_build| image:: https://travis-ci.org/Crypto-toolbox/hermes.svg?branch=master
+    :target: https://travis-ci.org/Crypto-toolbox/hermes
 
-.. |master_coverage| image:: https://coveralls.io/repos/github/nlsdfnbch/hermes/badge.svg?branch=master
-    :target: https://coveralls.io/github/nlsdfnbch/hermes?branch=master
+.. |master_coverage| image:: https://coveralls.io/repos/github/Crypto-toolbox/hermes/badge.svg?branch=master
+    :target: https://coveralls.io/github/Crypto-toolbox/hermes?branch=master
 
-.. |dev_build| image:: https://travis-ci.org/nlsdfnbch/hermes.svg?branch=dev
-    :target: https://travis-ci.org/nlsdfnbch/hermes             
+.. |dev_build| image:: https://travis-ci.org/Crypto-toolbox/hermes.svg?branch=dev
+    :target: https://travis-ci.org/Crypto-toolbox/hermes             
 
-.. |dev_coverage| image:: https://coveralls.io/repos/github/nlsdfnbch/hermes/badge.svg?branch=dev
-    :target: https://coveralls.io/github/nlsdfnbch/hermes?branch=dev
+.. |dev_coverage| image:: https://coveralls.io/repos/github/Crypto-toolbox/hermes/badge.svg?branch=dev
+    :target: https://coveralls.io/github/Crypto-toolbox/hermes?branch=dev
 
 
 .. |master_docs| image:: https://readthedocs.org/projects/hermes-framework/badge/?version=latest
