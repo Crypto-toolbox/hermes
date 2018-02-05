@@ -44,8 +44,8 @@ class Node:
         :param receiver: :class:`hermes.Receiver` instance.
         :param publisher: :class:`hermes.Publisher` instance.
         """
-        self.publisher = publisher
         self.receiver = receiver
+        self.publisher = publisher
         self._facilities = [self.receiver, self.publisher]
         self.name = name
         self._running = False
@@ -119,6 +119,19 @@ class Node:
                     raise
         log.debug("All facilities stopped successfully.")
 
+    def recv(self, block=None, timeout=None):
+        """Receive data from the receiver instance, if available.
+
+        The object at :attr:``hermes.node.Node.receiver`` must implement a ``recv(block, timeout)``
+        method, otherwise an ``NotImplementedError`` is raised.
+        """
+        block = block or False
+
+        try:
+            return self.receiver.recv(block, timeout)
+        except AttributeError:
+            raise NotImplementedError
+
     def publish(self, channel, data):
         """
         Publish the given data to channel, if it is available.
@@ -135,19 +148,6 @@ class Node:
         envelope = Envelope(channel + '/' + self.name, self.name, data)
         try:
             self.publisher.publish(envelope)
-        except AttributeError:
-            raise NotImplementedError
-
-    def recv(self, block=None, timeout=None):
-        """Receive data from the receiver instance, if available.
-
-        The object at :attr:``hermes.node.Node.receiver`` must implement a ``recv(block, timeout)``
-        method, otherwise an ``NotImplementedError`` is raised.
-        """
-        block = block or False
-
-        try:
-            return self.receiver.recv(block, timeout)
         except AttributeError:
             raise NotImplementedError
 
