@@ -26,8 +26,7 @@ log = logging.getLogger(__name__)
 
 
 class Node:
-    """
-    Basic Node Class.
+    """Basic Node Class.
 
     Provides a basic interface for starting and stopping a node.
 
@@ -35,10 +34,8 @@ class Node:
     """
 
     # pylint: disable=too-few-public-methods
-
     def __init__(self, name, receiver=None, publisher=None):
-        """
-        Initialize the instance.
+        """Initialize the instance.
 
         :param name: name of the :class:`hermes.Node` instance.
         :param receiver: :class:`hermes.Receiver` instance.
@@ -76,8 +73,7 @@ class Node:
         self._stop_facilities()
 
     def _start_facilities(self):
-        """
-        Start the Facilities available.
+        """Start the Facilities available.
 
         Iterates over :attr:`hermes.Node._facilities` and starts all facilities that evaluate
         to True.
@@ -98,8 +94,7 @@ class Node:
         log.debug("All facilities started successfully.")
 
     def _stop_facilities(self):
-        """
-        Stop the available facilities.
+        """Stop the available facilities.
 
         Iterates over self._facilities and stops all facilities that evaluate
         to True.
@@ -119,30 +114,27 @@ class Node:
                     raise
         log.debug("All facilities stopped successfully.")
 
-    def recv(self, block=None, timeout=None):
+    def recv(self, block=False, timeout=None):
         """Receive data from the receiver instance, if available.
 
         The object at :attr:``hermes.node.Node.receiver`` must implement a ``recv(block, timeout)``
         method, otherwise an ``NotImplementedError`` is raised.
         """
-        block = block or False
-
         try:
             return self.receiver.recv(block, timeout)
         except AttributeError:
             raise NotImplementedError
 
     def publish(self, channel, data):
-        """
-        Publish the given data to channel, if it is available.
+        """Publish the given data to channel, if it is available.
 
-        The object must implement a ``publish(envelope)`` method, otherwise a
+        The object must implement ``hermes.Publisher.publish()`` method, otherwise a
         :exception:``NotImplementedError`` is raised.
 
         The topic is generated from channel and :class:`hermes.Node.name`.
 
         :param channel: topic tree
-        :param data: Data Struct or string
+        :param data: Data object to send via the publisher.
         :return: :class:`None`
         """
         envelope = Envelope(channel + '/' + self.name, self.name, data)

@@ -26,18 +26,22 @@ class Publisher(Thread):
     which is fed by the :meth:`hermes.Publisher.publish` method.
     """
 
-    def __init__(self, pub_addr, name, ctx=None):
+    def __init__(self, target_addr, name, ctx=None, socket_type=None):
         """
         Initialize Instance.
 
         :param pub_addr: Address this instance should bind to
         :param name: Name to give this :class:`hermes.Publisher` instance.
         """
-        self.pub_addr = pub_addr
-        self._running = Event()
+        self.target_addr = target_addr
+        self._running = False
         self.sock = None
-        self.q = Queue()
         self.ctx = ctx or zmq.Context().instance()
+
+        self._input = self.ctx.socket(zmq.PUSH)
+        self._output = self.ctx.socket(zmq.PULL)
+
+        self.socket_type = socket_type or zmq.PUB
         super(Publisher, self).__init__(name=name)
 
     def publish(self, envelope):
@@ -48,7 +52,7 @@ class Publisher(Thread):
         :return: None
         """
         if self.sock:
-            self.q.put(envelope)
+            self._input.send_multipart(envelope.convert_to_frames())
             return True
         return False
 
@@ -73,44 +77,45 @@ class Publisher(Thread):
         :return: :class:`None`
         """
         log.debug("Clearing _running state..")
-        self._running.clear()
+        self._running = False
         log.debug("Closing socket..")
         try:
             self.sock.close()
         except AttributeError:
             log.debug("Socket was already closed!")
-            pass
         super(Publisher, self).join(timeout)
 
     def run(self):
         """
-        Custumized run loop to publish data.
+        Customized run loop to publish data.
 
         Sets up a ZMQ publisher socket and sends data as soon as it is available
         on the internal Queue at :attr:`hermes.Publisher.q`.
 
-        :return: :class:`None`
+        :return: :cls:`None`
         """
-        self._running.set()
+        self._running = True
         ctx = zmq.Context()
-        self.sock = ctx.socket(zmq.PUB)
+        self.sock = ctx.socket(self.socket_type)
         log.info("Connecting Publisher to zmq.XSUB Socket at %s.." % self.pub_addr)
-        self.sock.connect(self.pub_addr)
-        log.info("Success! Executing publisher loop..")
-        while self._running.is_set():
-            if not self.q.empty():
-                cts_msg = self.q.get(block=False)
-                frames = cts_msg.convert_to_frames()
-                log.debug("Sending %r ..", cts_msg)
-                try:
-                    self.sock.send_multipart(frames)
-                except zmq.error.ZMQError as e:
-                    log.error("ZMQError while sending data (%s), "
-                              "stopping Publisher", e)
-                    break
-            else:
+        self.sock.connect(self.target_addr)
+        log.info("Executing publisher loop..")
+        while self._running:
+            try:
+                frames = self._output.recv_multipart(zmq.NOBLOCK)
+            except zmq.EAgain:
                 continue
-
+            log.debug("Sending %r ..", cts_msg)
+            try:
+                self.sock.send_multipart(frames)
+            except zmq.error.ZMQError as e:
+                log.error("ZMQError while sending data (%r) - stopping Publisher", e)
+                break
+            except AttributeError:
+                if not self._running:
+                    log.info("Exiting publisher loop..")
+                    break
+                raise
         ctx.destroy()
         self.sock = None
         log.info("Loop terminated.")

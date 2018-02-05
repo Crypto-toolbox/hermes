@@ -10,6 +10,88 @@ from functools import reduce
 log = logging.getLogger(__name__)
 
 
+class Message:
+    """
+    Basic Struct class for data sent via an :class:`hermes.Envelope`.
+
+    Provides basic and dynamic load and dump functions to easily load
+    data to and from it.
+
+    If you have complex data types, consider extending this class, as it requires less overhead
+    than, for example, dictionaries, by using __slots__.
+
+    The class's timestamp attribute (ts) denotes the time of which the data was received.
+    """
+
+    __slots__ = ['dtype', 'ts']
+
+    def __init__(self, ts=None):
+        """
+        Initialize a :class:`hermes.Message` instance.
+
+        ts is the timestamp which should be used as reference when calculating
+        the age of the :class:`hermes.Message` instance.
+
+        :param ts: timestamp at which the message was created.
+        """
+        self.ts = time.time() if not ts else ts
+        self.dtype = self._class_to_string()
+
+    @classmethod
+    def load(cls, data):
+        """
+        Load data into a new data struct.
+
+        :param data: iterable, as transported by :class:`hermes.Envelope`
+        :return: :class:`hermes.Message`
+        """
+        instance = cls()
+        for value, attr in zip(data, cls._slots()):
+            setattr(instance, attr, value)
+
+        return instance
+
+    def serialize(self, encoding='UTF-8'):
+        """Serialize this data struct to :class:`bytes`.
+
+        :param encoding: Encoding to use in str.encode()
+        :return: data of this struct as :class:`bytes`
+        """
+        data = [getattr(self, attr) for attr in self._slots()]
+        return json.dumps(data).encode(encoding)
+
+    @classmethod
+    def _slots(cls):
+        """Get the class attributes as defined in its __slots__ attribute.
+
+         This includes all parents' __slots__ values.
+
+         Returns it in order of inheritance (base class __slots__ first).
+
+        :rtype: List
+        """
+        slot_attrs = []
+        class_slots = [parent_class for parent_class in reversed(cls.__mro__[:-1])]
+        for parent_cls in class_slots:
+            for attr in parent_cls.__slots__:
+                slot_attrs.append(attr)
+        return slot_attrs
+
+    def _class_to_string(self):
+        """Convert this class name into a :class:`str`."""
+        return self.__class__.__qualname__
+
+    # pylint: disable=too-many-format-args
+    def __repr__(self):
+        """Construct a basic string-represenation of this class instance."""
+        attributes_as_strings = '('
+        for attr in self._slots():
+            attributes_as_strings += '{0}={1}, '.format(attr, getattr(self, attr))
+        attributes_as_strings = attributes_as_strings[:-2] + ')'
+        s = "{0}{1}".format(self._class_to_string(), attributes_as_strings)
+        return s
+
+
 class Envelope:
     """Transport Object for data being sent between hermes components via ZMQ.
 
@@ -24,6 +106,8 @@ class Envelope:
     """
 
     __slots__ = ['topic', 'origin', 'data', 'ts']
+
+    expected_message_type = Message
 
     def __init__(self, topic_tree, origin, data, ts=None):
         """Initialize an :class:`hermes.Envelope` instance.
@@ -44,8 +128,8 @@ class Envelope:
         return ("Envelope(topic=%r, origin=%r, data=%r, ts=%r)" %
                 (self.topic, self.origin, self.data, self.ts))
 
-    @staticmethod
-    def load_from_frames(frames, encoding=None):
+    @classmethod
+    def load_from_frames(cls, frames, encoding=None):
         """
         Load json to a new :class:`hermes.Envelope` instance.
 
@@ -60,11 +144,8 @@ class Envelope:
         topic, origin, data, ts = [json.loads(x.decode(encoding)) for x in frames]
         data_dtype = data[0]
 
-        def load_class_from_string(class_name):
-            """Load the data into its relevant dtype, if available."""
-            return reduce(getattr, class_name.split("."), sys.modules[__name__]).empty().load(data)
         try:
-            data = load_class_from_string(data_dtype)
+            data = cls.expected_message_type.load(data_dtype)
         except AttributeError:
             pass
 
@@ -94,85 +175,3 @@ class Envelope:
     def update_ts(self):
         """Update the :class:`hermes.Envelope` timestamp."""
         self.ts = time.time()
-
-
-class Message:
-    """
-    Basic Struct class for data sent via an :class:`hermes.Envelope`.
-
-    Provides basic and dynamic load and dump functions to easily load
-    data to and from it.
-
-    If you have complex data types, consider extending this class, as it requires less overhead
-    than, for example, dictionaries, by using __slots__.
-
-    The class's timestamp attribute (ts) denotes the time of which the data was received.
-    """
-
-    __slots__ = ['dtype', 'ts']
-
-    def __init__(self, ts=None):
-        """
-        Initialize a :class:`hermes.Message` instance.
-
-        ts is the timestamp which should be used as reference when calculating
-        the age of the :class:`hermes.Message` instance.
-
-        :param ts: timestamp at which the message was created.
-        """
-        self.ts = time.time() if not ts else ts
-        self.dtype = self._class_to_string()
-
-    def load(self, data):
-        """
-        Load data into a new data struct.
-
-        :param data: iterable, as transported by :class:`hermes.Envelope`
-        :return: :class:`hermes.Message`
-        """
-        for value, attr in zip(data, self._slots()):
-            setattr(self, attr, value)
-
-        return self
-
-    def serialize(self, encoding=None):
-        """
-        Serialize this data struct to :class:`bytes`.
-
-        :param encoding: Encoding to use in str.encode()
-        :return: data of this struct as :class:`bytes`
-        """
-        encoding = 'utf-8' if not encoding else encoding
-        data = [getattr(self, attr) for attr in self._slots()]
-        return json.dumps(data).encode(encoding)
-
-    def _slots(self):
-        """
-        Get the instance's attributes as defined in its __slots__ attribute.
-
-         This includes all parents' __slots__ values.
-
-         Returns it in order of inheritance (base class __slots__ first).
-
-        :return: :class:`list`, copy of __slots__
-        """
-        slot_attrs = []
-        class_slots = [cls for cls in reversed(type(self).__mro__[:-1])]
-        for cls in class_slots:
-            for attr in cls.__slots__:
-                slot_attrs.append(attr)
-        return slot_attrs
-
-    def _class_to_string(self):
-        """Convert this class name into a :class:`str`."""
-        return self.__class__.__qualname__
-
-    # pylint: disable=too-many-format-args
-    def __repr__(self):
-        """Construct a basic string-represenation of this class instance."""
-        attributes_as_strings = '('
-        for attr in self._slots():
-            attributes_as_strings += '{0}={1}, '.format(attr, getattr(self, attr))
-        attributes_as_strings = attributes_as_strings[:-2] + ')'
-        s = "{0}{1}".format(self._class_to_string(), attributes_as_strings)
-        return s

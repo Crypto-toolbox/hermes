@@ -83,7 +83,7 @@ class PublisherTests(unittest.TestCase):
         publisher = Publisher("tcp://127.0.0.1:%s" % 5700, 'TestPub')
         publisher.start()
         time.sleep(3)
-        self.assertTrue(publisher._running.is_set())
+        self.assertTrue(publisher._running)
 
 
 if __name__ == '__main__':

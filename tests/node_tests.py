@@ -26,12 +26,12 @@ class NodeTests(unittest.TestCase):
             node.stop()
         mock_logger.assert_called_with("Could not stop all facilities!")
 
-    def test_publish_method_returns_error_if_no_publisher_available(self):
+    def test_publish_method_returns_error_if_publisher_implements_no_publish_method(self):
         node = Node('test', "Invalid", None)
         with self.assertRaises(NotImplementedError):
             node.publish("Something", "else")
 
-    def test_recv_method_returns_error_if_no_publisher_available(self):
+    def test_recv_method_returns_error_if_receiver_implements_no_recv_method(self):
         node = Node('test', "Invalid", None)
         with self.assertRaises(NotImplementedError):
             node.recv()
@@ -51,11 +51,11 @@ class NodeTests(unittest.TestCase):
         with node:
             self.assertEqual(node.name, 'test')
             self.assertTrue(node._facilities)
-            self.assertTrue(node.receiver._running.is_set())
-            self.assertTrue(node.publisher._running.is_set())
+            self.assertTrue(node.receiver._running)
+            self.assertTrue(node.publisher._running)
 
-        self.assertFalse(node.receiver._running.is_set())
-        self.assertFalse(node.publisher._running.is_set())
+        self.assertFalse(node.receiver._running)
+        self.assertFalse(node.publisher._running)
 
 
 if __name__ == '__main__':
