@@ -82,7 +82,7 @@ class Node:
         Iterates over :attr:`hermes.Node._facilities` and starts all facilities that evaluate
         to True.
 
-        All facilities must support a stop() method, otherwise an exception is
+        All facilities must support a start() method, otherwise an exception is
         logged and the facility isn't stopped.
         """
         self._running = True
