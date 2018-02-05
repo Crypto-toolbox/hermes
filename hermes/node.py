@@ -121,7 +121,10 @@ class Node:
 
     def publish(self, channel, data):
         """
-        Publish the given data to channel, if a :class:`hermes.Receiver` instance is available.
+        Publish the given data to channel, if it is available.
+
+        The object must implement a ``publish(envelope)`` method, otherwise a
+        :exception:``NotImplementedError`` is raised.
 
         The topic is generated from channel and :class:`hermes.Node.name`.
 
@@ -135,8 +138,14 @@ class Node:
         except AttributeError:
             raise NotImplementedError
 
-    def recv(self, block=False, timeout=None):
-        """Receive data from the :class:`hermes.Receiver` instance, if available."""
+    def recv(self, block=None, timeout=None):
+        """Receive data from the receiver instance, if available.
+
+        The object at :attr:``hermes.node.Node.receiver`` must implement a ``recv(block, timeout)``
+        method, otherwise an ``NotImplementedError`` is raised.
+        """
+        block = block or False
+
         try:
             return self.receiver.recv(block, timeout)
         except AttributeError:
