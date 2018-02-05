@@ -8,8 +8,8 @@
 
 
 
-Hermes
-======
+Hermes |pypi_badge|
+===================
 ZMQ-based framework for building simple Pub-Sub Systems, written in Python 3.
 
 It offers thread-based wrappers for zmq's SUB and PUB sockets, a pre-configured proxy device
@@ -51,3 +51,6 @@ install via ``pip install hermes-zmq`` and import with ``import hermes``.
 
 .. |dev_docs| image:: https://readthedocs.org/projects/hermes-framework/badge/?version=dev
     :target: http://hermes-framework.readthedocs.io/en/dev/?badge=dev
+
+.. |pypi_badge| image:: https://badge.fury.io/py/hermes-zmq.svg
+    :target: https://badge.fury.io/py/hermes-zmq
